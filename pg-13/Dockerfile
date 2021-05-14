@@ -9,7 +9,7 @@ RUN apt-get update && apt-get -y install ssh wget lsb-release gnupg2 && \
     wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
     apt-get update && apt-get -y install postgresql-13=${PG_VERSION} pgbackrest=${PGBR_VERSION} && \
     sed -r -i 's/# en_US.UTF-8 (.*)/en_US.UTF-8 \1/' /etc/locale.gen && \
-    sed -r -i 's/# ${LOCALE_OPT} (.*)/${LOCALE_OPT} \1/' /etc/locale.gen && \
+    sed -r -i "s/# ${LOCALE_OPT} (.*)/${LOCALE_OPT} \1/" /etc/locale.gen && \
     locale-gen && \
     apt autoclean && rm -rf /var/lib/apt/lists/*
 

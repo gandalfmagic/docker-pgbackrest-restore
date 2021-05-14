@@ -1,7 +1,7 @@
 FROM debian:10.9-slim
 
-ARG PG_VERSION=11.12-1
-ARG PGBR_VERSION=2.33-1
+ARG PG_VERSION=11.12-1.pgdg100+1
+ARG PGBR_VERSION=2.33-1.pgdg100+1
 
 RUN apt-get update && apt-get -y install ssh wget lsb-release gnupg2 && \
     sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list' && \

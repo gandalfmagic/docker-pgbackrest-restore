@@ -7,7 +7,7 @@ set -o pipefail
 set -u
 
 echo "$(date +'%Y-%m-%d %H:%M:%S %Z') --- LOG: Add known host"
-ssh-keyscan ${PGBR_REPO_HOST} >> ${SSH_DIR}/known_hosts 2>/dev/null
+ssh-keyscan ${PGBR_REPO_HOST} >> /var/lib/postgresql/.ssh/known_hosts 2>/dev/null
 
 echo "$(date +'%Y-%m-%d %H:%M:%S %Z') --- LOG: Restore from ${PGBR_REPO_HOST} started"
 touch /tmp/pgbackrest_empty.conf

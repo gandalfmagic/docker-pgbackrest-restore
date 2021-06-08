@@ -15,9 +15,9 @@ if [ -f /var/lib/postgresql/13/main/postmaster.pid ]; then
   rm /var/lib/postgresql/13/main/postmaster.pid
 fi
 
-if [ -f ${SSH_DIR}/id_rsa ]; then
+if [ -f /var/lib/postgresql/.ssh/id_rsa ]; then
   echo "$(date +'%Y-%m-%d %H:%M:%S %Z') --- LOG: Change id_rsa file permissions"
-  chmod 644 ${SSH_DIR}/id_rsa
+  chmod 644 /var/lib/postgresql/.ssh/id_rsa
 fi
 
 su postgres -c ./restore.sh

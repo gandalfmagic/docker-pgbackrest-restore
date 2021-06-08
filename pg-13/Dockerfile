@@ -12,6 +12,10 @@ RUN apt-get update && apt-get -y install ssh wget lsb-release gnupg2 && \
     sed -r -i 's/# en_US.UTF-8 (.*)/en_US.UTF-8 \1/' /etc/locale.gen && \
     sed -r -i "s/# ${LOCALE_OPT} (.*)/${LOCALE_OPT} \1/" /etc/locale.gen && \
     locale-gen && \
+    mkdir /var/lib/postgresql/.ssh && chmod 700 /var/lib/postgresql/.ssh && \
+    touch /var/lib/postgresql/.ssh/known_hosts && chmod 600 /var/lib/postgresql/.ssh/known_hosts && \
+    touch /var/lib/postgresql/.ssh/id_rsa && chmod 600 /var/lib/postgresql/.ssh/id_rsa && \
+    chown -R postgres:postgres /var/lib/postgresql/.ssh && \
     apt autoclean && rm -rf /var/lib/apt/lists/*
 
 COPY entrypoint.sh /entrypoint.sh

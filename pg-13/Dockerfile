@@ -16,5 +16,7 @@ RUN apt-get update && apt-get -y install ssh wget lsb-release gnupg2 && \
 
 COPY entrypoint.sh /entrypoint.sh
 COPY restore.sh /restore.sh
+RUN chmod 755 /restore.sh /entrypoint.sh
+
 
 ENTRYPOINT [ "/entrypoint.sh" ]

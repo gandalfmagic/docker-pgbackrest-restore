@@ -16,6 +16,7 @@ The container clones the PostgreSQL database from a remote pgbackrest repository
 | `PGBR_SSH_USER`           | pgbackrest user connecting to the remote pgbackrest repository in SSH (default: `pgbackrest`) |
 | `PGBR_TYPE`               | type of restore (valid values: `immediate`, `time`)                                           |
 | `PGBR_TIME`               | time for PITR, used only when `PGBR_TYPE` is `time`                                           |
+| `PGBR_CLEAN_DATA`         | clean the local postgres data before the pgbackrest restore (`true` when defined)             |
 
 To access the remote backup serve, you **must** provide a valid ssh key, mountig it as a volume in `/var/lib/postgresql/.ssh/id_rsa`.
 
@@ -40,7 +41,7 @@ $ TZ=America/New_York date -d '-1 day' '+%Y-%m-%d 23:59:59.999999%z'
 
 ### Testing the container locally
 
-Restoring a server using the latest backup set:
+Restore a server using the latest backup set:
 
 ```bash
 $ docker run -ti --rm \
@@ -51,10 +52,10 @@ $ docker run -ti --rm \
     -e PGBR_PG_MAX_CONNECTIONS=200 \
     -e PGBR_TYPE=immediate \
     -v /home/user/.ssh/id_rsa:/var/lib/postgresql/.ssh/id_rsa \
-    gandalfmagic/pgbackrest-restore-pg11:0.6
+    gandalfmagic/pgbackrest-restore-pg11:0.7
 ```
 
-Restoring a server using point-in-time restore:
+Restore a server using point-in-time restore:
 
 ```bash
 $ docker run -ti --rm \
@@ -66,5 +67,20 @@ $ docker run -ti --rm \
     -e PGBR_TYPE=time \
     -e PGBR_TIME="$(TZ=America/New_York date -d '-1 day' '+%Y-%m-%d 23:59:59.999999%z')" \
     -v /home/user/.ssh/id_rsa:/var/lib/postgresql/.ssh/id_rsa \
-    gandalfmagic/pgbackrest-restore-pg11:0.6
+    gandalfmagic/pgbackrest-restore-pg11:0.7
+```
+
+Restore a server using the latest backup set, forcing a full restore:
+
+```bash
+$ docker run -ti --rm \
+    -e PGBR_STANZA=test_stanza \
+    -e PGBR_REPO_HOST=10.10.10.1 \
+    -e PGBR_REPO_PATH=/var/lib/pgbackrest \
+    -e PGBR_PROCESS_MAX=4 \
+    -e PGBR_PG_MAX_CONNECTIONS=200 \
+    -e PGBR_TYPE=immediate \
+    -e PGBR_CLEAN_DATA=true \
+    -v /home/user/.ssh/id_rsa:/var/lib/postgresql/.ssh/id_rsa \
+    gandalfmagic/pgbackrest-restore-pg11:0.7
 ```

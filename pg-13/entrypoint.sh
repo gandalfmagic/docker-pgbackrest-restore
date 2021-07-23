@@ -17,7 +17,7 @@ fi
 
 if [ -f /var/lib/postgresql/.ssh/id_rsa ]; then
   echo "$(date +'%Y-%m-%d %H:%M:%S %Z') --- LOG: Change id_rsa file permissions"
-  chmod 644 /var/lib/postgresql/.ssh/id_rsa
+  chmod 644 /var/lib/postgresql/.ssh/id_rsa || true
 fi
 
 su postgres -c ./restore.sh

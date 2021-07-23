@@ -1,7 +1,7 @@
 FROM debian:10.9-slim
 
 ARG PG_VERSION=12.7-1.pgdg100+1
-ARG PGBR_VERSION=2.33-1.pgdg100+1
+ARG PGBR_VERSION=2.34-1.pgdg100+1
 ARG LOCALE_OPT=it_IT.UTF-8
 
 RUN apt-get update && apt-get -y install ssh wget lsb-release gnupg2 && \

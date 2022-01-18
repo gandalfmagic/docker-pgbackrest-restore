@@ -14,7 +14,7 @@ PGBR_CLEAN_DATA=${PGBR_CLEAN_DATA:-}
 
 if [ "${PGBR_CLEAN_DATA}" != "" ]; then
   echo "$(date +'%Y-%m-%d %H:%M:%S %Z') --- LOG: Cleaning local postgres data directory"
-  for entry in $(ls -1A /var/lib/postgresql/11/main); do
+  for entry in $(ls -1A /var/lib/postgresql/12/main); do
     rm -rf /var/lib/postgresql/12/main/${entry}
   done
 fi
@@ -33,7 +33,31 @@ elif [ "${PGBR_TYPE}" == "time" ]; then
 fi
 echo "$(date +'%Y-%m-%d %H:%M:%S %Z') --- LOG: Restore ended"
 
-echo "$(date +'%Y-%m-%d %H:%M:%S %Z') --- LOG: PostgreSQL server started"
+echo "$(date +'%Y-%m-%d %H:%M:%S %Z') --- LOG: Configuring server"
 sed -r -i "s/(#?)listen_addresses = (.*)$/listen_addresses = '*'/" /etc/postgresql/12/main/postgresql.conf
 sed -r -i "s/(#?)max_connections = (.*)/max_connections = ${PGBR_PG_MAX_CONNECTIONS:-100}/" /etc/postgresql/12/main/postgresql.conf
+
+if [[ -d /restore.d ]] && [[ "$(ls -1 /restore.d | wc -l)x" != "0x" ]]; then
+  echo "$(date +'%Y-%m-%d %H:%M:%S %Z') --- LOG: Starting server (script execution)"
+  touch /tmp/script_startup.log
+  /usr/lib/postgresql/12/bin/postgres -D /var/lib/postgresql/12/main -c config_file=/etc/postgresql/12/main/postgresql.conf >>/tmp/script_startup.log 2>&1 &
+
+  echo "$(date +'%Y-%m-%d %H:%M:%S %Z') --- LOG: Waiting for the database to be ready (script execution)..."
+  while [[ ! "$(tail -n 1 /tmp/script_startup.log)" =~ 'database system is ready to accept connections' ]]; do
+    sleep 3
+    echo "$(date +'%Y-%m-%d %H:%M:%S %Z') --- LOG: Waiting for the database to be ready (script execution)..."
+  done
+
+  echo "$(date +'%Y-%m-%d %H:%M:%S %Z') --- LOG: Starting execution of restore.d scripts"
+  find /restore.d -type f -name *.sh -exec {} \;
+  echo "$(date +'%Y-%m-%d %H:%M:%S %Z') --- LOG: Ended execution of restore.d scripts"
+
+  kill $(cat /var/run/postgresql/12-main.pid)
+  while [[ -f /var/lib/postgresql/12/main/postmaster.pid ]]; do
+    sleep 3
+    echo "$(date +'%Y-%m-%d %H:%M:%S %Z') --- LOG: Waiting for the database to shutdown (script execution)..."
+  done
+fi
+
+echo "$(date +'%Y-%m-%d %H:%M:%S %Z') --- LOG: Starting server"
 /usr/lib/postgresql/12/bin/postgres -D /var/lib/postgresql/12/main -c config_file=/etc/postgresql/12/main/postgresql.conf

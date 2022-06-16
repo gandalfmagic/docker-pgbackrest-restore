@@ -2,6 +2,15 @@
 
 This container permit to execure a PostgreSQL server instance, recovering the data from a remote pgbackrest repository.
 
+## Compatibility
+
+| Image version | debian     | pgbackrest |
+|---------------|------------|------------|
+| 0.8           | 10         | 2.33       |
+| 0.9           | 10         | 2.34       |
+| 0.12          | 11         | 2.37       |
+| 0.13          | 11         | 2.39       |
+
 ## Execute the container
 
 The container clones the PostgreSQL database from a remote pgbackrest repository, using the following environment variables:

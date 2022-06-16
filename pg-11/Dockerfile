@@ -1,8 +1,8 @@
-# gandalfmagic/pgbackrest-restore-pg11:0.12
-FROM debian:11.2-slim
+# gandalfmagic/pgbackrest-restore-pg13:0.13
+FROM debian:11.3-slim
 
-ARG PG_VERSION=11.14-1.pgdg110+1
-ARG PGBR_VERSION=2.37-1.pgdg110+1
+ARG PG_VERSION=11.16-1.pgdg110+1
+ARG PGBR_VERSION=2.39-1.pgdg110+1
 ARG LOCALE_OPT=it_IT.UTF-8
 
 RUN apt-get update && apt-get -y install ssh wget lsb-release gnupg2 curl jq && \

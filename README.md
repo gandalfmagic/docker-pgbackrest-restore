@@ -61,7 +61,7 @@ $ docker run -ti --rm \
     -e PGBR_PG_MAX_CONNECTIONS=200 \
     -e PGBR_TYPE=immediate \
     -v /home/user/.ssh/id_rsa:/var/lib/postgresql/.ssh/id_rsa \
-    gandalfmagic/pgbackrest-restore-pg11:0.12
+    gandalfmagic/pgbackrest-restore-pg13:0.13
 ```
 
 Restore a server using point-in-time restore:
@@ -76,7 +76,7 @@ $ docker run -ti --rm \
     -e PGBR_TYPE=time \
     -e PGBR_TIME="$(TZ=America/New_York date -d '-1 day' '+%Y-%m-%d 23:59:59.999999%z')" \
     -v /home/user/.ssh/id_rsa:/var/lib/postgresql/.ssh/id_rsa \
-    gandalfmagic/pgbackrest-restore-pg11:0.12
+    gandalfmagic/pgbackrest-restore-pg13:0.13
 ```
 
 Restore a server using the latest backup set, forcing a full restore:
@@ -91,5 +91,5 @@ $ docker run -ti --rm \
     -e PGBR_TYPE=immediate \
     -e PGBR_CLEAN_DATA=true \
     -v /home/user/.ssh/id_rsa:/var/lib/postgresql/.ssh/id_rsa \
-    gandalfmagic/pgbackrest-restore-pg11:0.12
+    gandalfmagic/pgbackrest-restore-pg13:0.13
 ```

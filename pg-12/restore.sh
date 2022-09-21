@@ -22,14 +22,14 @@ fi
 touch /tmp/pgbackrest_empty.conf
 if [ "${PGBR_TYPE}" == "immediate" ]; then
   echo "$(date +'%Y-%m-%d %H:%M:%S %Z') --- LOG: Restore from ${PGBR_REPO_HOST} started, latest backup set will be used"
-  pgbackrest restore --config=/tmp/pgbackrest_empty.conf --delta --log-level-console=error --log-level-file=off --pg1-path=/var/lib/postgresql/12/main --process-max=${PGBR_PROCESS_MAX} --recovery-option=recovery_target_action=promote --repo1-host="${PGBR_REPO_HOST}" --repo1-host-user="${PGBR_SSH_USER:-pgbackrest}" --repo1-path="${PGBR_REPO_PATH}" --stanza="${PGBR_STANZA}" --type=immediate
+  pgbackrest restore --config=/tmp/pgbackrest_empty.conf --delta --log-level-console=error --log-level-file=off --pg1-path=/var/lib/postgresql/12/main --process-max=${PGBR_PROCESS_MAX} --recovery-option=recovery_target_action=promote --repo"${PGBR_REPO_ID:-1}"-host="${PGBR_REPO_HOST}" --repo"${PGBR_REPO_ID:-1}"-host-user="${PGBR_SSH_USER:-pgbackrest}" --stanza="${PGBR_STANZA}" --type=immediate
 elif [ "${PGBR_TYPE}" == "time" ]; then
   if [ "${PGBR_TIME}" == "" ]; then
     >&2 echo "You must specify a valid PITR time with the PGBR_TIME variable"
     exit 1
   fi
   echo "$(date +'%Y-%m-%d %H:%M:%S %Z') --- LOG: Restore from ${PGBR_REPO_HOST} started, PITR at ${PGBR_TIME} will be used"
-  pgbackrest restore --config=/tmp/pgbackrest_empty.conf --delta --log-level-console=error --log-level-file=off --pg1-path=/var/lib/postgresql/12/main --process-max=${PGBR_PROCESS_MAX} --recovery-option=recovery_target_action=promote --repo1-host="${PGBR_REPO_HOST}" --repo1-host-user="${PGBR_SSH_USER:-pgbackrest}" --repo1-path="${PGBR_REPO_PATH}" --stanza="${PGBR_STANZA}" --type=time --target="${PGBR_TIME}"
+  pgbackrest restore --config=/tmp/pgbackrest_empty.conf --delta --log-level-console=error --log-level-file=off --pg1-path=/var/lib/postgresql/12/main --process-max=${PGBR_PROCESS_MAX} --recovery-option=recovery_target_action=promote --repo"${PGBR_REPO_ID:-1}"-host="${PGBR_REPO_HOST}" --repo"${PGBR_REPO_ID:-1}"-host-user="${PGBR_SSH_USER:-pgbackrest}" --stanza="${PGBR_STANZA}" --type=time --target="${PGBR_TIME}"
 fi
 echo "$(date +'%Y-%m-%d %H:%M:%S %Z') --- LOG: Restore ended"
 

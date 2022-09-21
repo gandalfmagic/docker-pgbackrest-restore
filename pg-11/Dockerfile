@@ -1,14 +1,18 @@
 # gandalfmagic/pgbackrest-restore-pg13:0.13
-FROM debian:11.3-slim
+FROM debian:11.5-slim
 
-ARG PG_VERSION=11.16-1.pgdg110+1
+ARG PG_VERSION=11.17-1.pgdg110+1
 ARG PGBR_VERSION=2.39-1.pgdg110+1
 ARG LOCALE_OPT=it_IT.UTF-8
+
+COPY pgbackrest_${PGBR_VERSION}_amd64.deb /tmp
 
 RUN apt-get update && apt-get -y install ssh wget lsb-release gnupg2 curl jq && \
     sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list' && \
     wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
-    apt-get update && apt-get -y install postgresql-11=${PG_VERSION} pgbackrest=${PGBR_VERSION} && \
+    apt-get update && apt-get -y install postgresql-11=${PG_VERSION} pgbackrest && \
+    apt-get install -y --allow-downgrades "/tmp/pgbackrest_${PGBR_VERSION}_amd64.deb" && \
+    rm -f "/tmp/pgbackrest_${PGBR_VERSION}_amd64.deb" && \
     echo "host    all             all             0.0.0.0/0               md5" >>/etc/postgresql/11/main/pg_hba.conf && \
     sed -r -i 's/# en_US.UTF-8 (.*)/en_US.UTF-8 \1/' /etc/locale.gen && \
     sed -r -i "s/# ${LOCALE_OPT} (.*)/${LOCALE_OPT} \1/" /etc/locale.gen && \
@@ -19,8 +23,8 @@ RUN apt-get update && apt-get -y install ssh wget lsb-release gnupg2 curl jq && 
     chown -R postgres:postgres /var/lib/postgresql/.ssh && \
     apt autoclean && rm -rf /var/lib/apt/lists/*
 
-COPY entrypoint.sh /entrypoint.sh
-COPY restore.sh /restore.sh
+COPY pg-11/entrypoint.sh /entrypoint.sh
+COPY pg-11/restore.sh /restore.sh
 RUN chmod 755 /restore.sh /entrypoint.sh
 
 

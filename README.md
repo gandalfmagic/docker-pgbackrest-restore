@@ -10,6 +10,7 @@ This container permit to execure a PostgreSQL server instance, recovering the da
 | 0.9           | 10         | 2.34       |
 | 0.12          | 11         | 2.37       |
 | 0.13          | 11         | 2.39       |
+| 0.14          | 11         | 2.39       |
 
 ## Execute the container
 
@@ -17,8 +18,8 @@ The container clones the PostgreSQL database from a remote pgbackrest repository
 
 | Name                      | Description                                                                                   |
 |---------------------------|-----------------------------------------------------------------------------------------------|
+| `PGBR_REPO_ID`            | id of the repository where the restore is located (default 1 )                                |
 | `PGBR_REPO_HOST`          | hostname or IP address of theremote pgbackrest repository                                     |
-| `PGBR_REPO_PATH`          | path where the backup is stored on the pgbackrest repository                                  |
 | `PGBR_STANZA`             | defines the pgbackrest stanza to restore                                                      |
 | `PGBR_PROCESS_MAX`        | maximum number of processes used by pgbackrest                                                |
 | `PGBR_PG_MAX_CONNECTIONS` | max_connections parameters used on the postgresql server (default: 100)                       |

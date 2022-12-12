@@ -11,6 +11,7 @@ This container permit to execure a PostgreSQL server instance, recovering the da
 | 0.12          | 11         | 2.37       |
 | 0.13          | 11         | 2.39       |
 | 0.14          | 11         | 2.39       |
+| 0.15          | 11         | 2.39       |
 
 ## Execute the container
 

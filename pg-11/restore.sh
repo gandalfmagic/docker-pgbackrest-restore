@@ -20,9 +20,9 @@ if [ "${PGBR_CLEAN_DATA}" != "" ]; then
 fi
 
 touch /tmp/pgbackrest_empty.conf
-if [ "${PGBR_TYPE}" == "immediate" ]; then
+if [ "${PGBR_TYPE}" == "immediate" ] || [ "${PGBR_TYPE}" == "default" ]; then
   echo "$(date +'%Y-%m-%d %H:%M:%S %Z') --- LOG: Restore from ${PGBR_REPO_HOST} started, latest backup set will be used"
-  pgbackrest restore --config=/tmp/pgbackrest_empty.conf --delta --log-level-console=error --log-level-file=off --pg1-path=/var/lib/postgresql/11/main --process-max=${PGBR_PROCESS_MAX} --recovery-option=recovery_target_action=promote --repo"${PGBR_REPO_ID:-1}"-host="${PGBR_REPO_HOST}" --repo"${PGBR_REPO_ID:-1}"-host-user="${PGBR_SSH_USER:-pgbackrest}" --stanza="${PGBR_STANZA}" --type=immediate
+  pgbackrest restore --config=/tmp/pgbackrest_empty.conf --delta --log-level-console=error --log-level-file=off --pg1-path=/var/lib/postgresql/11/main --process-max=${PGBR_PROCESS_MAX} --recovery-option=recovery_target_action=promote --repo"${PGBR_REPO_ID:-1}"-host="${PGBR_REPO_HOST}" --repo"${PGBR_REPO_ID:-1}"-host-user="${PGBR_SSH_USER:-pgbackrest}" --stanza="${PGBR_STANZA}" --type="${PGBR_TYPE}"
 elif [ "${PGBR_TYPE}" == "time" ]; then
   if [ "${PGBR_TIME}" == "" ]; then
     >&2 echo "You must specify a valid PITR time with the PGBR_TIME variable"

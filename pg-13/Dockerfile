@@ -1,7 +1,7 @@
-# gandalfmagic/pgbackrest-restore-pg13:0.14
+# gandalfmagic/pgbackrest-restore-pg13:0.15
 FROM debian:11.5-slim
 
-ARG PG_VERSION=13.8-1.pgdg110+1
+ARG PG_VERSION=13.9-1.pgdg110+1
 ARG PGBR_VERSION=2.39-1.pgdg110+1
 ARG LOCALE_OPT=it_IT.UTF-8
 

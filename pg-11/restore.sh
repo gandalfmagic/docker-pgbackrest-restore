@@ -8,7 +8,7 @@ set -u
 
 echo "$(date +'%Y-%m-%d %H:%M:%S %Z') --- LOG: Add known host ${PGBR_REPO_HOST}"
 ssh_keyscan_count=12
-while ! ssh-keyscan "${PGBR_REPO_HOST}" 2>/dev/null; do
+while ! ssh-keyscan "${PGBR_REPO_HOST}" >>/var/lib/postgresql/.ssh/known_hosts 2>/dev/null; do
   if [ ${ssh_keyscan_count} -eq 0 ]; then
     echo "$(date +'%Y-%m-%d %H:%M:%S %Z') --- ERROR: the ssh-keyscan command failed after 1 minute of retries"
     exit 1

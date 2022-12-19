@@ -1,4 +1,4 @@
-# gandalfmagic/pgbackrest-restore-pg12:0.15
+# gandalfmagic/pgbackrest-restore-pg12:0.16
 FROM debian:11.5-slim
 
 ARG PG_VERSION=12.13-1.pgdg110+1
